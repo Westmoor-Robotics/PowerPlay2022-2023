@@ -1,33 +1,42 @@
 package org.firstinspires.ftc.teamcode;
 
+// botched together by: fedor khaldin
+// if doesn't work ask for support: anyone but fedor khaldin
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
 
 @TeleOp(name="Two Stick Drive")
 public class TwoStickDriveOpMode extends LinearOpMode {
 
-    private DcMotor leftMotor, rightMotor;
+    private DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     private Servo leftServo, rightServo;
 
     @Override
     public void runOpMode() {
 
-        leftMotor = hardwareMap.get(DcMotor.class, "leftmotor");
-        rightMotor = hardwareMap.get(DcMotor.class, "rightmotor");
+        leftFrontMotor = hardwareMap.get(DcMotor.class, "leftfrontmotor");
+        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightfrontmotor");
+        leftBackMotor = hardwareMap.get(DcMotor.class, "leftbackmotor");
+        rightBackMotor = hardwareMap.get(DcMotor.class, "rightbackmotor");
 
         leftServo = hardwareMap.get(Servo.class,"leftservo");
         rightServo = hardwareMap.get(Servo.class,"rightservo");
 
         // IF WHEELS ARE SPINNING BACKWARDS CHANGE THESE TWO UP AND FIX IT PROBABLY MAYBE
-        leftMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         leftServo.setDirection(Servo.Direction.REVERSE);
         rightServo.setDirection(Servo.Direction.FORWARD);
+
 
         waitForStart();
 
@@ -57,16 +66,18 @@ public class TwoStickDriveOpMode extends LinearOpMode {
                 rightServo.setPosition(0);
             }
 
-            // GITUHB TEST
-
-
-            // adjust pwoer
-            leftMotor.setPower(leftPower);
+            // Setting Power Appropriately
+            leftFrontMotor.setPower(leftPower);
+            leftBackMotor.setPower(leftPower);
             telemetry.addData("Left Motor Power",leftPower);
-            rightMotor.setPower(rightPower);
+
+            rightFrontMotor.setPower(rightPower);
+            rightBackMotor.setPower(rightPower);
             telemetry.addData("Right Motor Power",rightPower);
+
             telemetry.addData("Right Bumper", rightBumper);
             telemetry.addData("Left Bumper", leftBumper);
+
             telemetry.update();
 
 
