@@ -9,6 +9,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import com.sun.tools.javac.resources.version;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 @TeleOp(name="Two Stick Drive")
@@ -16,14 +19,15 @@ public class TwoStickDriveOpMode extends LinearOpMode {
 
     private DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     private Servo leftServo, rightServo;
+    private static double version = 1.1;
 
     @Override
     public void runOpMode() {
-
+        telemetry.addData("v",version);
         leftFrontMotor = hardwareMap.get(DcMotor.class, "leftmotor"); //in 2 drive config
-        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightfrontmotor");
-        leftBackMotor = hardwareMap.get(DcMotor.class, "leftbackmotor");
-        rightBackMotor = hardwareMap.get(DcMotor.class, "rightmotor"); //in 2 drive config
+        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightmotor"); // in 2 drive config
+//        leftBackMotor = hardwareMap.get(DcMotor.class, "leftbackmotor");
+//        rightBackMotor = hardwareMap.get(DcMotor.class, "rightbackmotor");
 
         leftServo = hardwareMap.get(Servo.class,"leftservo");
         rightServo = hardwareMap.get(Servo.class,"rightservo");
@@ -31,8 +35,8 @@ public class TwoStickDriveOpMode extends LinearOpMode {
         // IF WHEELS ARE SPINNING BACKWARDS CHANGE THESE TWO UP AND FIX IT PROBABLY MAYBE
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
+//        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+//        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         leftServo.setDirection(Servo.Direction.REVERSE);
         rightServo.setDirection(Servo.Direction.FORWARD);
@@ -74,11 +78,11 @@ public class TwoStickDriveOpMode extends LinearOpMode {
 
             // Setting Power Appropriately
             leftFrontMotor.setPower(leftPower);
-            leftBackMotor.setPower(leftPower);
+//            leftBackMotor.setPower(leftPower);
             telemetry.addData("Left Motor Power",leftPower);
 
             rightFrontMotor.setPower(rightPower);
-            rightBackMotor.setPower(rightPower);
+//            rightBackMotor.setPower(rightPower);
             telemetry.addData("Right Motor Power",rightPower);
 
             telemetry.addData("Right Bumper", rightBumper);
