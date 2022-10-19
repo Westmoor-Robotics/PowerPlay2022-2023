@@ -45,24 +45,27 @@ public class TwoStickDriveOpMode extends LinearOpMode {
         rightServo.setDirection(Servo.Direction.FORWARD);
 
 
+
+
         waitForStart();
 
         while (opModeIsActive()) {
-            twoStickDrive();
+            boolean leftBumper = gamepad1.left_bumper;
+            boolean rightBumper = gamepad1.right_bumper;
+
+            double leftStick = -gamepad1.left_stick_y; // get left stick power
+            double rightStick = (gamepad1.right_stick_x); // get right stick turn power. Right turn position = 1, left = -1
+
+            twoStickDrive(leftBumper,rightBumper, leftStick, rightStick);
             telemetry.update();
         }
     }
 
-    private void twoStickDrive() {
+    private void twoStickDrive(boolean leftBumper, boolean rightBumper, double drivePower, double turnPower) {
         telemetry.addData("If You're Seeing This Method Works", version);
-        boolean leftBumper = gamepad1.left_bumper;
-        boolean rightBumper = gamepad1.right_bumper;
 
         double leftPower;
         double rightPower;
-
-        double drivePower = -gamepad1.left_stick_y; // get left stick power
-        double turnPower = (gamepad1.right_stick_x); // get right stick turn power. Right turn position = 1, left = -1
 
         if (drivePower == 1 && turnPower == -1) {
             turnPower = turnPower * 2;
