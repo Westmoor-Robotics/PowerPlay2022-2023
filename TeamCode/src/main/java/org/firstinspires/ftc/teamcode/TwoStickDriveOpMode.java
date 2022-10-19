@@ -19,12 +19,14 @@ public class TwoStickDriveOpMode extends LinearOpMode {
 
     private DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     private Servo leftServo, rightServo;
-    private static double version = 1.1;
+    private static double version = 1.2;
     private boolean twoStickDrive = false;
 
     @Override
     public void runOpMode() {
+        // Setting Version (Just to detect build faillure)
         telemetry.addData("v",version);
+
         leftFrontMotor = hardwareMap.get(DcMotor.class, "leftfrontmotor"); //in 2 drive config
         rightFrontMotor = hardwareMap.get(DcMotor.class, "rightfrontmotor"); // in 2 drive config
         leftBackMotor = hardwareMap.get(DcMotor.class, "leftbackmotor");
@@ -52,6 +54,7 @@ public class TwoStickDriveOpMode extends LinearOpMode {
     }
 
     private void twoStickDrive() {
+        telemetry.addData("If You're Seeing This Method Works", version);
         boolean leftBumper = gamepad1.left_bumper;
         boolean rightBumper = gamepad1.right_bumper;
 
@@ -64,8 +67,6 @@ public class TwoStickDriveOpMode extends LinearOpMode {
         if (drivePower == 1 && turnPower == -1) {
             turnPower = turnPower * 2;
         }
-
-
 
         // Just combining power of wheel (based off left stick power) to turn power to determine how much it should turn
         leftPower = Range.clip(drivePower - turnPower, -1.0, 1.0);
