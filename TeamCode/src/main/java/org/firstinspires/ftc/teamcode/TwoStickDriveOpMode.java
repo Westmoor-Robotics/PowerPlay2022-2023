@@ -19,7 +19,7 @@ public class TwoStickDriveOpMode extends LinearOpMode {
 
     private DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
     private Servo leftServo, rightServo;
-    private static double version = 1.3;
+    private static double version = 1.4;
     private boolean twoStickDrive = false;
 
     @Override
@@ -38,12 +38,12 @@ public class TwoStickDriveOpMode extends LinearOpMode {
         // IF WHEELS ARE SPINNING BACKWARDS CHANGE THESE TWO UP AND FIX IT PROBABLY MAYBE
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        
+
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
 
         leftServo.setDirection(Servo.Direction.REVERSE);
-        rightServo.setDirection(Servo.Direction.FORWARD);
+        rightServo.setDirection(Servo.Direction.REVERSE);
 
 
 
@@ -55,7 +55,10 @@ public class TwoStickDriveOpMode extends LinearOpMode {
             boolean rightBumper = gamepad1.right_bumper;
 
             double drivePower = -gamepad1.left_stick_y; // get left stick power
-            double turnPower = (gamepad1.right_stick_x); // get right stick turn power. Right turn position = 1, left = -1
+            double turnPower = -(gamepad1.right_stick_x); // get right stick turn power. Right turn position = 1, left = -1
+
+            telemetry.addData("Left Stick", drivePower);
+            telemetry.addData("Right Stick", turnPower);
 
             telemetry.addData("If You're Seeing This Method Works", version);
 
@@ -71,15 +74,15 @@ public class TwoStickDriveOpMode extends LinearOpMode {
             rightPower = Range.clip(drivePower + turnPower, -1.0, 1.0);
 
             if(leftBumper) {
-                leftServo.setPosition(1);
+                leftServo.setPosition(0.9); // 1
             } else {
-                leftServo.setPosition(0);
+                leftServo.setPosition(0); // 1.8
             }
 
             if(rightBumper) {
-                rightServo.setPosition(1);
+                rightServo.setPosition(0.9);  // 0.9
             } else {
-                rightServo.setPosition(0);
+                rightServo.setPosition(0.5);  // 0.5
             }
 
             // Setting Power Appropriately
