@@ -18,7 +18,7 @@ public class ServoConfigHelper extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Setting Version (Just to detect build faillure)
-        telemetry.addData("v",version);
+        telemetry.addData("Servo Config v",version);
 
         // Identifying Servo
         rightServo = hardwareMap.get(Servo.class,"rightservo");
