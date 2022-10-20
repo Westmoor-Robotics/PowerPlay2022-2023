@@ -80,7 +80,7 @@ public class TwoStickDriveOpMode extends LinearOpMode {
             }
 
             if(rightBumper) {
-                rightServo.setPosition(0.9);  // 0.9
+                rightServo.setPosition(0.7);  // 0.9 (edi9ted by Muhammad to 0.7)
             } else {
                 rightServo.setPosition(0.5);  // 0.5
             }
