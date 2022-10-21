@@ -5,13 +5,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 
-@TeleOp(name="Servo Config Helper")
-public class ServoConfigHelper extends LinearOpMode {
+@TeleOp(name="Servo Config Helper Using Sticks")
+public class ServoConfigHelperSticks extends LinearOpMode {
     private Servo leftServo, rightServo;
     private static double version = 1.1;
 
@@ -33,19 +31,26 @@ public class ServoConfigHelper extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            leftServoPos = leftServoPos - gamepad1.left_stick_y;
-            rightServoPos = rightServoPos - gamepad1.right_stick_y;
+
+           double leftStick = -0.05 * gamepad1.left_stick_y;
+           double rightStick = -0.05 * gamepad1.right_stick_y;
+
+           if (leftServoPos != leftStick) {
+               leftServoPos = leftServoPos + leftStick;
+           }
+
+           if (rightServoPos != rightStick) {
+               rightServoPos = rightServoPos + rightStick;
+           }
 
             leftServo.setPosition(leftServoPos);
             rightServo.setPosition(rightServoPos);
 
             telemetry.addData("Actual Left Servo Pos:", leftServo.getPosition());
-            telemetry.addData("What the left servo pos should be", leftServoPos);
-            telemetry.addData("The left stick value is", -gamepad1.left_stick_y);
+            telemetry.addData("The left stick value is", leftStick);
 
             telemetry.addData("Actual Right Servo Pos:", rightServo.getPosition());
-            telemetry.addData("What the right servo pos should be", rightServoPos);
-            telemetry.addData("The right stick value is", -gamepad1.right_stick_y);
+            telemetry.addData("The right stick value is", rightStick);
             telemetry.update();
         }
     }
