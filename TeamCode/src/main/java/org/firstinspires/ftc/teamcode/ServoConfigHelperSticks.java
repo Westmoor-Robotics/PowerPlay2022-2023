@@ -28,19 +28,24 @@ public class ServoConfigHelperSticks extends LinearOpMode {
         double leftServoPos = 0.0;
         double rightServoPos = 0.0;
 
+        double previousLeftPos = 0.0;
+        double previousRightPos = 0.0;
+
         waitForStart();
 
         while (opModeIsActive()) {
 
-           double leftStick = -0.05 * gamepad1.left_stick_y;
-           double rightStick = -0.05 * gamepad1.right_stick_y;
+           double leftStick = -0.005 * gamepad1.left_stick_y;
+           double rightStick = -0.005 * gamepad1.right_stick_y;
 
-           if (leftServoPos != leftStick) {
+           if (previousLeftPos != leftStick) {
                leftServoPos = leftServoPos + leftStick;
+               previousLeftPos = leftServo.getPosition();
            }
 
-           if (rightServoPos != rightStick) {
+           if (previousRightPos != rightStick) {
                rightServoPos = rightServoPos + rightStick;
+               previousRightPos = rightServo.getPosition();
            }
 
             leftServo.setPosition(leftServoPos);
