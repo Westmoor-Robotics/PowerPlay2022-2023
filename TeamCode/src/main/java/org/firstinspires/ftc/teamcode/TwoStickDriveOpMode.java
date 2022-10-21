@@ -74,15 +74,15 @@ public class TwoStickDriveOpMode extends LinearOpMode {
             rightPower = Range.clip(drivePower + turnPower, -1.0, 1.0);
 
             if(leftBumper) {
-                leftServo.setPosition(0.9); // 1
+                leftServo.setPosition(0.9); // 0.9
             } else {
-                leftServo.setPosition(0); // 1.8
+                leftServo.setPosition(0); // 0
             }
 
             if(rightBumper) {
-                rightServo.setPosition(0.7);  // 0.9 (edi9ted by Muhammad to 0.7)
+                rightServo.setPosition(0.7);  // 0.7 (edi9ted by Muhammad to 0.7)
             } else {
-                rightServo.setPosition(0.5);  // 0.5
+                rightServo.setPosition(02.5);  // 2.5
             }
 
             // Setting Power Appropriately

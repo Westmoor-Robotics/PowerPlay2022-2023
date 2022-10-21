@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.Range;
 @TeleOp(name="Servo Config Helper")
 public class ServoConfigHelper extends LinearOpMode {
     private Servo leftServo, rightServo;
-    private static double version = 1.0;
+    private static double version = 1.1;
 
     @Override
     public void runOpMode() {
@@ -39,8 +39,13 @@ public class ServoConfigHelper extends LinearOpMode {
             leftServo.setPosition(leftServoPos);
             rightServo.setPosition(rightServoPos);
 
-            telemetry.addData("Left Servo Pos:", leftServo.getPosition());
-            telemetry.addData("Right Servo Pos:", rightServo.getPosition());
+            telemetry.addData("Actual Left Servo Pos:", leftServo.getPosition());
+            telemetry.addData("What the left servo pos should be", leftServoPos);
+            telemetry.addData("The left stick value is", -gamepad1.left_stick_y);
+
+            telemetry.addData("Actual Right Servo Pos:", rightServo.getPosition());
+            telemetry.addData("What the right servo pos should be", rightServoPos);
+            telemetry.addData("The right stick value is", -gamepad1.right_stick_y);
             telemetry.update();
         }
     }

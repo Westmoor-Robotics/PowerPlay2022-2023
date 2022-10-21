@@ -43,7 +43,7 @@ public class MultiDriveMode extends LinearOpMode {
 
         leftServo.setDirection(Servo.Direction.REVERSE);
         rightServo.setDirection(Servo.Direction.FORWARD);
-        
+
         waitForStart();
 
         while (opModeIsActive()) {
