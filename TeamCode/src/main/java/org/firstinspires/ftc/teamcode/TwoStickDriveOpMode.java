@@ -74,15 +74,15 @@ public class TwoStickDriveOpMode extends LinearOpMode {
             rightPower = Range.clip(drivePower + turnPower, -1.0, 1.0);
 
             if(leftBumper) {
-                leftServo.setPosition(0.9); // 0.9
+                leftServo.setPosition(0.9); // MODIFY THIS TO VALUE YOU WANT SERVO TO HOLD WHEN BUTTON HELD
             } else {
-                leftServo.setPosition(0); // 0
+                leftServo.setPosition(0); // MODIFY THIS TO VALUE YOU WANT SERVO TO RESET BACK TO OTHERWISE
             }
 
             if(rightBumper) {
-                rightServo.setPosition(0.7);  // 0.7 (edi9ted by Muhammad to 0.7)
+                rightServo.setPosition(0.7);  // MODIFY THIS TO VALUE YOU AWNT SERVO TO HOLD WHEN BUTTON HELD
             } else {
-                rightServo.setPosition(02.5);  // 2.5
+                rightServo.setPosition(02.5);  // MODIFY THIS VALUE TO WHAT YOU WANT SERVO TO RESET BACK TO OTHERWISE
             }
 
             // Setting Power Appropriately
