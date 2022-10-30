@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.utils.ServoConfig;
 
 // botched together by: fedor khaldin
 // if doesn't work ask for support: anyone but fedor khaldin

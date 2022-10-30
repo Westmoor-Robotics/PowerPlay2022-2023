@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.utils.ServoConfig;
 
 
 import static java.lang.Double.max;
@@ -7,7 +7,7 @@ import static java.lang.Double.min;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
-@TeleOp(name = "ServoTest", group = "TeleOp")
+@TeleOp(name = "ServoTestLast Resort", group = "TeleOp")
 public class OneServoConfig extends LinearOpMode {
     Servo test;
     double pos = 0.5;
