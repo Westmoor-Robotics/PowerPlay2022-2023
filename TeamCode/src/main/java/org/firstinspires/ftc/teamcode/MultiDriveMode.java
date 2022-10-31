@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 // botched together by: fedor khaldin
 // if doesn't work ask for support: anyone but fedor khaldin
-// discord webhook test 
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
