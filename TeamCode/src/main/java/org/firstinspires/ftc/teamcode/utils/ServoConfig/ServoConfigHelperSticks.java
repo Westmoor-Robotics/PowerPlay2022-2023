@@ -6,6 +6,9 @@ package org.firstinspires.ftc.teamcode.utils.ServoConfig;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
+
+import org.checkerframework.checker.units.qual.min;
 
 
 @TeleOp(name="Servo Config Helper Using Sticks")
@@ -39,12 +42,12 @@ public class ServoConfigHelperSticks extends LinearOpMode {
            double rightStick = -0.005 * gamepad1.right_stick_y;
 
            if (previousLeftPos != leftStick) {
-               leftServoPos = leftServoPos + leftStick;
+               leftServoPos = Range.clip(leftServoPos + leftStick, 0, 1);
                previousLeftPos = leftServo.getPosition();
            }
 
            if (previousRightPos != rightStick) {
-               rightServoPos = rightServoPos + rightStick;
+               rightServoPos = Range.clip(rightServoPos + rightStick, 0, 1);
                previousRightPos = rightServo.getPosition();
            }
 
