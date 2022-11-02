@@ -19,11 +19,22 @@ public class OneServoConfig extends LinearOpMode {
     boolean xReleased = false;
     boolean yPressed = false;
     boolean yReleased = false;
+    boolean rightMotor = false;
     @Override
     public void runOpMode() {
-        test = hardwareMap.get(Servo.class, "leftservo"); //CHANGE THIS CONFIG VALUE AS DESIRED
         waitForStart();
         while (opModeIsActive() && !isStopRequested()) {
+            // "logic"
+            if (gamepad1.back) {
+                rightMotor = !rightMotor;
+            }
+
+            if (rightMotor) {
+                test = hardwareMap.get(Servo.class, "rightservo");
+            } else {
+                test = hardwareMap.get(Servo.class, "leftservo");
+            }
+
             if (gamepad1.a) {
                 aPressed = aReleased;
                 aReleased = false;
@@ -63,6 +74,14 @@ public class OneServoConfig extends LinearOpMode {
             }
             test.setPosition(pos);
             telemetry.addData("Position", pos);
+
+            // this is terribly written lol
+            if (rightMotor) {
+                telemetry.addData("Right Motor Position",pos);
+            } else {
+                telemetry.addData("Left Motor Position", pos);
+            }
+
             telemetry.update();
         }
     }

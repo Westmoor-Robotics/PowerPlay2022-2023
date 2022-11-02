@@ -56,7 +56,7 @@ public class MultiDriveMode extends LinearOpMode {
 
             // Servo Control (NEED DEBUGGING)
             if(leftBumper) {
-                leftServo.setPosition(1);
+                leftServo.setPosition(0.4);
             } else {
                 leftServo.setPosition(0);
             }
