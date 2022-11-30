@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.Vision;
+package org.firstinspires.ftc.teamcode.OPENCVVision;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -111,6 +111,7 @@ public class PipelineStageSwitchingExample extends LinearOpMode
             THRESHOLD,
             CONTOURS_OVERLAYED_ON_FRAME,
             RAW_IMAGE,
+
         }
 
         private Stage stageToRenderToViewport = Stage.YCbCr_CHAN2;

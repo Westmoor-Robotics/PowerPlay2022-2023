@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 OpenFTC Team
+ * Copyright (c) 2020 OpenFTC Team
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,60 +19,56 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.Vision;
+package org.firstinspires.ftc.teamcode.OPENCVVision;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
-import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
-import org.openftc.easyopencv.OpenCvTracker;
-import org.openftc.easyopencv.OpenCvTrackerApiPipeline;
+import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvSwitchableWebcam;
+import org.openftc.easyopencv.OpenCvCamera;
 
-/**
- * In this sample, we demonstrate how to use the {@link OpenCvTrackerApiPipeline()}
- * class to run multiple {@link OpenCvTracker} instances on each frame from the camera.
- */
-@TeleOp
-public class TrackerApiExample extends LinearOpMode
+public class SwitchableWebcamExample extends LinearOpMode
 {
-    OpenCvCamera phoneCam;
-    OpenCvTrackerApiPipeline trackerApiPipeline;
-    UselessColorBoxDrawingTracker tracker1, tracker2, tracker3;
+    WebcamName webcam1;
+    WebcamName webcam2;
+    OpenCvSwitchableWebcam switchableWebcam;
 
     @Override
-    public void runOpMode()
+    public void runOpMode() throws InterruptedException
     {
         /**
          * NOTE: Many comments have been omitted from this sample for the
-         * sake of conciseness. If you're just starting out with EasyOpenCV,
+         * sake of conciseness. If you're just starting out with EasyOpenCv,
          * you should take a look at {@link InternalCamera1Example} or its
          * webcam counterpart, {@link WebcamExample} first.
          */
 
+        webcam1 = hardwareMap.get(WebcamName.class, "Webcam 1");
+        webcam2 = hardwareMap.get(WebcamName.class, "Webcam 2");
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         /**
-         * Create an instance of the {@link OpenCvTrackerApiPipeline}
-         * pipeline (included with EasyOpenCV), and tell the camera
-         * to use it.
+         * Here we use a special factory method that accepts multiple WebcamName arguments. It returns an
+         * {@link OpenCvSwitchableWebcam} which contains a couple extra methods over simply an {@link OpenCvCamera}.
          */
-        trackerApiPipeline = new OpenCvTrackerApiPipeline();
-        phoneCam.setPipeline(trackerApiPipeline);
+        switchableWebcam = OpenCvCameraFactory.getInstance().createSwitchableWebcam(cameraMonitorViewId, webcam1, webcam2);
 
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        switchableWebcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                switchableWebcam.setPipeline(new SamplePipeline());
+                switchableWebcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -84,47 +80,38 @@ public class TrackerApiExample extends LinearOpMode
             }
         });
 
-        /*
-         * Create some trackers we want to run
-         */
-        tracker1 = new UselessColorBoxDrawingTracker(new Scalar(255, 0, 0));
-        tracker2 = new UselessColorBoxDrawingTracker(new Scalar(0, 255, 0));
-        tracker3 = new UselessColorBoxDrawingTracker(new Scalar(0, 0, 255));
-
-        /*
-         * Add those trackers to the pipeline. All trackers added to the
-         * trackerApiPipeline will be run upon receipt of a frame from the
-         * camera. Note: the trackerApiPipeline will handle switching
-         * the viewport view on tap between the output of each of the trackers
-         * for you.
-         */
-        trackerApiPipeline.addTracker(tracker1);
-        trackerApiPipeline.addTracker(tracker2);
-        trackerApiPipeline.addTracker(tracker3);
-
         waitForStart();
 
         while (opModeIsActive())
         {
-            /*
-             * If you later want to stop running a tracker on each frame,
-             * you can remove it from the trackerApiPipeline like so:
+            telemetry.addLine("PRESS A/B TO SWITCH CAMERA\n");
+            telemetry.addData("Frame Count", switchableWebcam.getFrameCount());
+            telemetry.addData("FPS", String.format("%.2f", switchableWebcam.getFps()));
+            telemetry.addData("Total frame time ms", switchableWebcam.getTotalFrameTimeMs());
+            telemetry.addData("Pipeline time ms", switchableWebcam.getPipelineTimeMs());
+            telemetry.addData("Overhead time ms", switchableWebcam.getOverheadTimeMs());
+            telemetry.addData("Theoretical max FPS", switchableWebcam.getCurrentPipelineMaxFps());
+            telemetry.update();
+
+            /**
+             * To switch the active camera, simply call
+             * {@link OpenCvSwitchableWebcam#setActiveCamera(WebcamName)}
              */
-            //trackerApiPipeline.removeTracker(tracker1);
+            if(gamepad1.a)
+            {
+                switchableWebcam.setActiveCamera(webcam1);
+            }
+            else if(gamepad1.b)
+            {
+                switchableWebcam.setActiveCamera(webcam2);
+            }
 
             sleep(100);
         }
     }
 
-    class UselessColorBoxDrawingTracker extends OpenCvTracker
+    class SamplePipeline extends OpenCvPipeline
     {
-        Scalar color;
-
-        UselessColorBoxDrawingTracker(Scalar color)
-        {
-            this.color = color;
-        }
-
         @Override
         public Mat processFrame(Mat input)
         {
@@ -136,7 +123,7 @@ public class TrackerApiExample extends LinearOpMode
                     new Point(
                             input.cols()*(3f/4f),
                             input.rows()*(3f/4f)),
-                    color, 4);
+                    new Scalar(0, 255, 0), 4);
 
             return input;
         }

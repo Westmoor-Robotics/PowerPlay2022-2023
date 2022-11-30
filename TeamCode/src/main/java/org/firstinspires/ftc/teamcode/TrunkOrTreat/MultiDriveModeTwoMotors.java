@@ -1,20 +1,19 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.TrunkOrTreat;
 
 // botched together by: fedor khaldin
-// if doesn't work ask for support: anyone but fedor khaldin.
+// if doesn't work ask for support: anyone but fedor khaldin
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
-@TeleOp(name="Multiple Option Drive Mode")
-public class MultiDriveMode extends LinearOpMode {
+@TeleOp(name="Multiple Option Drive Mode With Only Two Motors")
+public class MultiDriveModeTwoMotors extends LinearOpMode {
 
-    private DcMotor leftFrontMotor, rightFrontMotor, leftBackMotor, rightBackMotor;
+    private DcMotor leftFrontMotor, rightFrontMotor;
     private Servo leftServo, rightServo;
     private static double version = 1.3;
     private boolean twoStickDrive = false;
@@ -27,10 +26,8 @@ public class MultiDriveMode extends LinearOpMode {
         telemetry.addData("v",version);
 
         // Hardware maps!!!
-        leftFrontMotor = hardwareMap.get(DcMotor.class, "leftfrontmotor"); //in 2 drive config
-        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightfrontmotor"); // in 2 drive config
-        leftBackMotor = hardwareMap.get(DcMotor.class, "leftbackmotor");
-        rightBackMotor = hardwareMap.get(DcMotor.class, "rightbackmotor");
+        leftFrontMotor = hardwareMap.get(DcMotor.class, "leftmotor"); //in 2 drive config
+        rightFrontMotor = hardwareMap.get(DcMotor.class, "rightmotor"); // in 2 drive config
 
         leftServo = hardwareMap.get(Servo.class,"leftservo");
         rightServo = hardwareMap.get(Servo.class,"rightservo");
@@ -38,8 +35,6 @@ public class MultiDriveMode extends LinearOpMode {
         // Motor Direction Config
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
 
         leftServo.setDirection(Servo.Direction.REVERSE);
         rightServo.setDirection(Servo.Direction.FORWARD);
@@ -56,7 +51,7 @@ public class MultiDriveMode extends LinearOpMode {
 
             // Servo Control (NEED DEBUGGING)
             if(leftBumper) {
-                leftServo.setPosition(0.4);
+                leftServo.setPosition(1);
             } else {
                 leftServo.setPosition(0);
             }
@@ -104,11 +99,9 @@ public class MultiDriveMode extends LinearOpMode {
 
         // Setting Power Appropriately
         leftFrontMotor.setPower(leftPower);
-        leftBackMotor.setPower(leftPower);
         telemetry.addData("Left Motor Power",leftPower);
 
         rightFrontMotor.setPower(rightPower);
-        rightBackMotor.setPower(rightPower);
         telemetry.addData("Right Motor Power",rightPower);
     }
 
@@ -120,6 +113,6 @@ public class MultiDriveMode extends LinearOpMode {
 
         // Sets power
         leftFrontMotor.setPower(leftPower);
-        leftBackMotor.setPower(leftPower);
+        rightFrontMotor.setPower(rightPower);
     }
 }
