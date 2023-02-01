@@ -19,13 +19,11 @@
  * SOFTWARE.
  */
 
-package org.firstinspires.ftc.teamcode.AprilTagsTest;
+package org.firstinspires.ftc.teamcode.AutonComp2022;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.AprilTagsTest.AprilTagDetectionPipeline;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -34,11 +32,14 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
-@TeleOp
-public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
+@Autonomous
+public class RightAuton2022 extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+
+    Robot2022 robot = new Robot2022();
+    Movement2022 move = new Movement2022(robot, this);
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -59,6 +60,10 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
     int MIDDLE = 2;
     int RIGHT = 3;
 
+
+    // Speed
+    double x = 0.6;
+
     AprilTagDetection tagOfInterest = null;
 
     @Override
@@ -75,6 +80,7 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
             public void onOpened()
             {
                 camera.startStreaming(960,720, OpenCvCameraRotation.UPRIGHT);
+                camera.showFpsMeterOnViewport(true);
             }
 
             @Override
@@ -86,10 +92,10 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
 
         telemetry.setMsTransmissionInterval(50);
 
-        /*
-         * The INIT-loop:
-         * This REPLACES waitForStart!
-         */
+        robot.init(hardwareMap, telemetry);
+        move.closeServo();
+
+        // Replaced Wait For Start
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -144,32 +150,55 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
                 }
 
             }
-
-            telemetry.update();
-            sleep(20);
         }
 
         /*
          * The START command just came in: now work off the latest snapshot acquired
          * during the init loop.
          */
-
+        telemetry.update();
         /* Update the telemetry */
         if(tagOfInterest != null)
         {
-            telemetry.addLine("Tag snapshot:\n");
             tagToTelemetry(tagOfInterest);
             telemetry.update();
         }
         else
         {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
+            telemetry.addLine("No Tag Found, how'd you manage to fuck this up?");
             telemetry.update();
         }
 
 
-        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-        while (opModeIsActive()) {sleep(20);}
+        if (!isStopRequested()) {
+
+            tagToTelemetry(tagOfInterest);
+            telemetry.update();
+
+            //Movement Code
+
+            move.backward(0.65, x);
+            move.stop(1);
+            move.liftUp(1.1);
+            move.strafeRight(0.65, 0.5);
+            move.stop(1);
+            move.forward(0.1, x);
+            move.stop(1);
+            move.openServo();
+            sleep(2000);
+            move.closeServo();
+            move.backward(0.1, x);
+            move.stop(1);
+            move.liftDown(1.1);
+
+            if (tagOfInterest != null) {
+                parking(tagOfInterest);
+            } else {
+                telemetry.addData("No Tag Found", tagOfInterest);
+            }
+
+            move.stop(1);
+        }
     }
 
     void tagToTelemetry(AprilTagDetection detection)
@@ -181,5 +210,39 @@ public class AprilTagAutonomousInitDetectionExample extends LinearOpMode
         }else{
             telemetry.addData("Right", tagOfInterest.id);
         }
+    }
+
+    void parking(AprilTagDetection detection) {
+        if(tagOfInterest.id == LEFT){
+            leftPath();
+        }else if(tagOfInterest.id == MIDDLE){
+            midPath();
+        }else if(tagOfInterest.id == RIGHT){
+            rightPath();
+        } else {
+            telemetry.addData("Tag not found inside of parking methiod", tagOfInterest);
+        }
+    }
+
+    void leftPath() {
+        telemetry.addLine("Path Set to Left");
+        telemetry.update();
+
+        move.strafeRight(0.43, x);
+        move.backward(0.2, x);
+    }
+
+    void rightPath() {
+        telemetry.addLine("Path Set to Right");
+        telemetry.update();
+
+        move.strafeLeft(1.5, x);
+    }
+
+    void midPath() {
+        telemetry.addLine("Path Set To Mid");
+        telemetry.update();
+
+        move.strafeLeft(0.4, x);
     }
 }

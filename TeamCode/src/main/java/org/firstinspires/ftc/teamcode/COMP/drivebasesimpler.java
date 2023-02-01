@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@teleop
+@TeleOp
 public class drivebasesimpler extends LinearOpMode {
 
     DcMotor motorFrontLeft;

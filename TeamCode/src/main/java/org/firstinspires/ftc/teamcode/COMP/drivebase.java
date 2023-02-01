@@ -16,6 +16,7 @@ public class drivebase extends LinearOpMode {
         DcMotor motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         DcMotor motorBackRight = hardwareMap.dcMotor.get("backRight");
 
+
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
         motorFrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -40,7 +41,7 @@ public class drivebase extends LinearOpMode {
             double backRightPower = (y + x - rx) / denominator; // -1
 
             // lx: 1 ly: 0
-
+//            motorBackLeft.get;
             motorFrontLeft.setPower(frontLeftPower);
             motorBackLeft.setPower(backLeftPower);
             motorFrontRight.setPower(frontRightPower);
