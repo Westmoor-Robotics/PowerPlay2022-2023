@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.AutonComp2022;
 
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -7,6 +8,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 
 public class Robot2022 {
@@ -15,6 +17,7 @@ public class Robot2022 {
     public DcMotor frontleft, backleft, frontright, backright, rightlift, leftlift;
     public ColorSensor color_sensor;
     public Servo leftGrab, rightGrab;
+    public VoltageSensor vSensor;
 
 
     public BNO055IMU imu;
@@ -27,6 +30,8 @@ public class Robot2022 {
         backright = hwMap.get(DcMotor.class, "Back Right");
         rightlift = hwMap.get(DcMotor.class, "Right Lift Motor");
         leftlift = hwMap.get(DcMotor.class, "Left Lift Motor");
+
+        vSensor = hwMap.voltageSensor.iterator().next();
 
         color_sensor = hwMap.get(ColorSensor.class, "Color");
 

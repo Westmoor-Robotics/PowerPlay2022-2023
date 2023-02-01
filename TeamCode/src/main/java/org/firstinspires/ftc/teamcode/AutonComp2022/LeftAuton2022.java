@@ -63,7 +63,7 @@ public class LeftAuton2022 extends LinearOpMode
 
     // Speed
     double x = 0.6;
-    
+
     AprilTagDetection tagOfInterest = null;
 
     @Override
@@ -175,8 +175,13 @@ public class LeftAuton2022 extends LinearOpMode
             tagToTelemetry(tagOfInterest);
             telemetry.update();
 
-            //Movement Code
+            // Voltage Readout
+            double voltage = robot.vSensor.getVoltage();
 
+            telemetry.addData("voltage is: ", voltage);
+            telemetry.update();
+
+            //Movement Code
             move.backward(0.65, x);
             move.stop(1);
             move.liftUp(1.1);
