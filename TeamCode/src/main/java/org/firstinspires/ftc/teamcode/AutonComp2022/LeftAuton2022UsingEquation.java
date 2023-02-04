@@ -33,7 +33,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.util.ArrayList;
 
 @Autonomous
-public class RightAuton2022 extends LinearOpMode
+public class LeftAuton2022UsingEquation extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -175,12 +175,26 @@ public class RightAuton2022 extends LinearOpMode
             tagToTelemetry(tagOfInterest);
             telemetry.update();
 
-            //Movement Code
+            // Voltage Readout
+            double voltage = robot.vSensor.getVoltage();
+            double calculatedPower;
 
+            telemetry.addData("voltage is: ", voltage);
+            telemetry.update();
+
+            calculatedPower = (-0.05*voltage)+1.3;
+            x = calculatedPower;
+
+
+            // By now final power has been calculated and stored in X
+            telemetry.addData("Running with a power of: ", x);
+            telemetry.update();
+
+            //Movement Code
             move.backward(0.65, x);
             move.stop(1);
             move.liftUp(1.1);
-            move.strafeRight(0.65, 0.5);
+            move.strafeLeft(0.5, x);
             move.stop(1);
             move.forward(0.1, x);
             move.stop(1);
@@ -228,21 +242,20 @@ public class RightAuton2022 extends LinearOpMode
         telemetry.addLine("Path Set to Left");
         telemetry.update();
 
-        move.strafeRight(0.43, x);
-        move.backward(0.2, x);
+        move.strafeRight(1.5, x);
     }
 
     void rightPath() {
         telemetry.addLine("Path Set to Right");
         telemetry.update();
 
-        move.strafeLeft(1.5, x);
+        move.strafeLeft(0.4, x);
     }
 
     void midPath() {
         telemetry.addLine("Path Set To Mid");
         telemetry.update();
 
-        move.strafeLeft(0.4, x);
+        move.strafeRight(0.4, x);
     }
 }

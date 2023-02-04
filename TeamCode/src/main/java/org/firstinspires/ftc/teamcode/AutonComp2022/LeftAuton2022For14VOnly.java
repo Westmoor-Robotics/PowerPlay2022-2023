@@ -33,7 +33,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.util.ArrayList;
 
 @Autonomous
-public class LeftAuton2022 extends LinearOpMode
+public class LeftAuton2022For14VOnly extends LinearOpMode
 {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -174,31 +174,6 @@ public class LeftAuton2022 extends LinearOpMode
 
             tagToTelemetry(tagOfInterest);
             telemetry.update();
-
-            // Voltage Readout
-            double voltage = robot.vSensor.getVoltage();
-            double calculatedPower;
-
-            telemetry.addData("voltage is: ", voltage);
-            telemetry.update();
-
-            calculatedPower = 0.043 * voltage;
-
-            // Failsafe for testing purposes to avoid smashing the bot in reverse or something
-            telemetry.addData("Do you want to continue with voltage of " + calculatedPower + "or return to defualt: ", x);
-            telemetry.addLine("Press (A) to continue, (B) to abort");
-            telemetry.update();
-
-            while (true) {
-                if (gamepad1.a) {
-                    x = calculatedPower;
-                    break;
-                }
-
-                if (gamepad1.b) {
-                    break;
-                }
-            }
 
             // By now final power has been calculated and stored in X
             telemetry.addData("Running with a power of: ", x);
